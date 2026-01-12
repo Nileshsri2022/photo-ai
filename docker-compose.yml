@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD="mysecretpassword"
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    restart: always
+    container_name: backend-service
+    ports:
+      - 8080:8080
+    environment:
+      - OPENAI_BASE_URL="https://api.electronhub.ai/v1/"
+      - OPENAI_API_KEY="ek-wKxf8gp8VSz1zY3pnJQufNeZUyIMFES2wwkS5TOfy6iOjz0Ov6"
+      - FAL_KEY="7b82b786-8db2-4cbe-8bc7-a0df26c96ee5:819cfa7bd6a24652ff53aa492983ae11"
+      - CLOUDINARY_CLOUD_NAME="your_cloud_name"
+      - CLOUDINARY_API_KEY="your_api_key"
+      - CLOUDINARY_API_SECRET="your_api_secret"
+      - RAZORPAY_KEY_ID="rzp_test_RGhNdzzhnbLpgH"
+      - RAZORPAY_KEY_SECRET="2YkgUcyVpfURVJO2E8e3bQb6"
+      - SIGNING_SECRET="whsec_jP9GZG8qcKzFiYdD5JF78x4TNJFt5BD"
+      - CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxosCKS/GMFrANDLdjxml XHHl6aWObVbJph51r9ZFI9Req5Io2jfgNs6Yc1Ozpmv42aNoGHeGUNvVLHkV4ul6 jBf5PgNbxrWmGA5T/9BLXp0gY51dL/PXRhtZumSziGLEAa2mUZJDrXF11U336fgd WG3MqCtFQbuEBVyv4zYxvRfNJkYT1T0JWB7mRHOZ/x9n/tsEJ+Sh8U82zytenhIH 2L/2RPXKNu6WqXd6SfvyijnrP5d1fDY3erj8Tx4pN40N4wsg3Ot8ezpiBHzw9lRF GwO40srh5kqymwNimHVpjI5t//7xFxKRnT97emrJWM1YNyEtaabqYzfYynscLYFr 7QIDAQAB -----END PUBLIC KEY-----"
+      - WEBHOOK_BASE_URL="https://play.svix.com/in/e_0JknrdHYDkhtd3CXKXP5ldItRh5/"
+      - FRONTEND_URL="http://localhost:3000"
+      - CLERK_SECRET_KEY="sk_test_hJNQ8Q7GDeNunzJp39li7rumzLT6pUuFALDRNIROeV"
+      - CLERK_ISSUER="https://allowing-bat-26.clerk.accounts.dev"
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    restart: always
+    container_name: frontend-service
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL="http://backend:8080"
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_YWxsb3dpbmctYmF0LTI2LmNsZXJrLmFjY291bnRzLmRldiQ"
+      - CLERK_SECRET_KEY="sk_test_hJNQ8Q7GDeNunzJp39li7rumzLT6pUuFALDRNIROeV"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "bun run index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@clerk/express": "^1.7.62",
+    "@clerk/nextjs": "^6.11.2",
+    "@fal-ai/client": "^1.2.3",
+    "@neondatabase/serverless": "^0.10.4",
+    "@types/cors": "^2.8.17",
+    "@types/download": "^8.0.5",
+    "@types/express": "^5.0.0",
+    "common": "*",
+    "cors": "^2.8.5",
+    "db": "*",
+    "download": "^8.0.0",
+    "express": "^4.21.2",
+    "extract-zip": "^2.0.1",
+    "jszip": "^3.10.1",
+    "razorpay": "^2.9.5",
+    "svix": "^1.57.0"
+  }
+}
